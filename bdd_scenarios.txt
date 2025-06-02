@@ -1,0 +1,144 @@
+# Rhythm Sketchpad Web - BDD Scenarios
+
+## Feature: Project Management
+
+### Scenario: Creating a new project
+Given the user is on the main page
+When the user clicks "New Project" button
+Then a new empty project should be created
+And the project should have default settings
+And the user should see an empty timeline
+
+### Scenario: Saving a project
+Given the user has made changes to the project
+When the user clicks "Save Project" button
+Then the project should be saved to local storage
+And the user should see a success notification
+
+## Feature: Audio File Import
+
+### Scenario: Importing a valid audio file
+Given the user is on the project page
+When the user clicks "Import Audio" button
+And selects a valid WAV or MP3 file
+Then the file should be uploaded successfully
+And a new audio clip should be created
+And the clip should appear on the timeline
+
+### Scenario: Importing an invalid audio file
+Given the user is on the project page
+When the user clicks "Import Audio" button
+And selects an invalid file format
+Then the system should show an error message
+And the file should not be imported
+
+## Feature: Audio Recording
+
+### Scenario: Recording audio from microphone
+Given the user is on the project page
+And has granted microphone access
+When the user clicks "Record" button
+Then recording should start
+And the user should see recording indicators
+When the user clicks "Stop" button
+Then recording should stop
+And a new audio clip should be created
+And the clip should appear on the timeline
+
+### Scenario: Recording without microphone access
+Given the user is on the project page
+And has not granted microphone access
+When the user clicks "Record" button
+Then the system should request microphone access
+And show appropriate error message if denied
+
+## Feature: Track Management
+
+### Scenario: Adding a new track
+Given the user is on the project page
+When the user clicks "Add Track" button
+Then a new track should be created
+And the track should appear in the track list
+And the track should have default settings
+
+### Scenario: Deleting a track
+Given there is at least one track in the project
+When the user selects a track
+And clicks "Delete Track" button
+Then the track should be removed
+And all clips on the track should be deleted
+
+## Feature: Audio Clip Management
+
+### Scenario: Moving a clip
+Given there is an audio clip on a track
+When the user drags the clip to a new position
+Then the clip should move to the new position
+And the audio playback should reflect the new position
+
+### Scenario: Resizing a clip
+Given there is an audio clip on a track
+When the user drags the clip's edge
+Then the clip should resize
+And the audio playback should reflect the new duration
+
+## Feature: Playback Control
+
+### Scenario: Playing the project
+Given there are audio clips in the project
+When the user clicks "Play" button
+Then playback should start
+And the playhead should move along the timeline
+And all clips should play according to their positions
+
+### Scenario: Stopping playback
+Given the project is playing
+When the user clicks "Stop" button
+Then playback should stop
+And the playhead should return to the start position
+
+## Feature: Audio Effects
+
+### Scenario: Adding an effect to a track
+Given there is a track in the project
+When the user clicks "Add Effect" button
+And selects an effect type
+Then the effect should be added to the track
+And the effect parameters should be set to default values
+
+### Scenario: Adjusting effect parameters
+Given there is an effect on a track
+When the user adjusts the effect parameters
+Then the audio should be processed with the new parameters
+And the changes should be applied in real-time
+
+## Feature: Project Export
+
+### Scenario: Exporting the project
+Given there are audio clips in the project
+When the user clicks "Export" button
+Then the system should process all tracks
+And combine them into a single audio file
+And the user should be prompted to save the file
+
+### Scenario: Exporting with effects
+Given there are effects applied to tracks
+When the user exports the project
+Then all effects should be applied to the exported audio
+And the final file should reflect all processing
+
+## Feature: Error Handling
+
+### Scenario: Handling audio processing errors
+Given the user is performing an audio operation
+When an error occurs during processing
+Then the system should show an appropriate error message
+And the operation should be safely terminated
+And the project state should remain consistent
+
+### Scenario: Handling file system errors
+Given the user is performing a file operation
+When a file system error occurs
+Then the system should show an appropriate error message
+And the operation should be safely terminated
+And the project state should remain consistent 

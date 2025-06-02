@@ -1,0 +1,111 @@
+@startuml Rhythm Sketchpad Web - Use Case Diagram
+
+skinparam actorStyle awesome
+skinparam usecase {
+    BackgroundColor LightBlue
+    BorderColor DarkBlue
+    ArrowColor DarkBlue
+    ActorBorderColor DarkBlue
+}
+
+' Actors
+actor "User" as user
+actor "System" as system
+actor "Audio Files" as files
+actor "Microphone" as mic
+
+' Use Cases
+rectangle "Rhythm Sketchpad Web" {
+    ' Project Management
+    usecase "Create New Project" as UC1
+    usecase "Save Project" as UC2
+    usecase "Load Project" as UC3
+
+    ' Audio Management
+    usecase "Import Audio File" as UC4
+    usecase "Record Audio" as UC5
+    usecase "Delete Audio" as UC6
+
+    ' Track Management
+    usecase "Add Track" as UC7
+    usecase "Delete Track" as UC8
+    usecase "Rename Track" as UC9
+
+    ' Clip Management
+    usecase "Move Clip" as UC10
+    usecase "Resize Clip" as UC11
+    usecase "Split Clip" as UC12
+    usecase "Merge Clips" as UC13
+
+    ' Playback Control
+    usecase "Play Project" as UC14
+    usecase "Stop Playback" as UC15
+    usecase "Pause Playback" as UC16
+    usecase "Seek Position" as UC17
+
+    ' Effects
+    usecase "Add Effect" as UC18
+    usecase "Adjust Effect Parameters" as UC19
+    usecase "Remove Effect" as UC20
+
+    ' Export
+    usecase "Export Project" as UC21
+    usecase "Export with Effects" as UC22
+
+    ' Error Handling
+    usecase "Handle Audio Errors" as UC23
+    usecase "Handle File Errors" as UC24
+}
+
+' Relationships
+user --> UC1
+user --> UC2
+user --> UC3
+user --> UC4
+user --> UC5
+user --> UC6
+user --> UC7
+user --> UC8
+user --> UC9
+user --> UC10
+user --> UC11
+user --> UC12
+user --> UC13
+user --> UC14
+user --> UC15
+user --> UC16
+user --> UC17
+user --> UC18
+user --> UC19
+user --> UC20
+user --> UC21
+user --> UC22
+
+system --> UC23
+system --> UC24
+
+files --> UC4
+files --> UC21
+files --> UC22
+
+mic --> UC5
+
+' Extensions
+UC4 ..> UC23 : <<extend>>
+UC5 ..> UC23 : <<extend>>
+UC21 ..> UC23 : <<extend>>
+UC22 ..> UC23 : <<extend>>
+
+UC2 ..> UC24 : <<extend>>
+UC3 ..> UC24 : <<extend>>
+UC4 ..> UC24 : <<extend>>
+UC21 ..> UC24 : <<extend>>
+
+' Inclusions
+UC14 ..> UC17 : <<include>>
+UC15 ..> UC17 : <<include>>
+UC16 ..> UC17 : <<include>>
+
+UC21 ..> UC22 : <<include>>
+
+@enduml 

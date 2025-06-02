@@ -1,0 +1,579 @@
+# Rhythm Sketchpad Web - Code Listing
+
+## Project Structure
+```
+rhythm-sketchpad-web/
+├── src/
+│   ├── components/
+│   ├── audio-worklets/
+│   ├── utils/
+│   ├── contexts/
+│   ├── pages/
+│   ├── lib/
+│   ├── hooks/
+│   └── ...
+├── public/
+└── ...
+```
+
+## Configuration Files
+
+### package.json
+```json
+{
+  "name": "vite_react_shadcn_ts",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "build:dev": "vite build --mode development",
+    "lint": "eslint .",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@hookform/resolvers": "^3.9.0",
+    "@radix-ui/react-accordion": "^1.2.0",
+    "@radix-ui/react-alert-dialog": "^1.0.5",
+    "@radix-ui/react-aspect-ratio": "^1.0.3",
+    "@radix-ui/react-avatar": "^1.0.4",
+    "@radix-ui/react-checkbox": "^1.0.4",
+    "@radix-ui/react-collapsible": "^1.0.3",
+    "@radix-ui/react-context-menu": "^2.1.5",
+    "@radix-ui/react-dialog": "^1.0.5",
+    "@radix-ui/react-dropdown-menu": "^2.0.6",
+    "@radix-ui/react-hover-card": "^1.0.7",
+    "@radix-ui/react-label": "^2.0.2",
+    "@radix-ui/react-menubar": "^1.0.4",
+    "@radix-ui/react-navigation-menu": "^1.1.4",
+    "@radix-ui/react-popover": "^1.0.7",
+    "@radix-ui/react-progress": "^1.0.3",
+    "@radix-ui/react-radio-group": "^1.1.3",
+    "@radix-ui/react-scroll-area": "^1.0.5",
+    "@radix-ui/react-select": "^2.0.0",
+    "@radix-ui/react-separator": "^1.0.3",
+    "@radix-ui/react-slider": "^1.1.2",
+    "@radix-ui/react-slot": "^1.0.2",
+    "@radix-ui/react-switch": "^1.0.3",
+    "@radix-ui/react-tabs": "^1.0.4",
+    "@radix-ui/react-toast": "^1.1.5",
+    "@radix-ui/react-toggle": "^1.0.3",
+    "@radix-ui/react-toggle-group": "^1.0.4",
+    "@radix-ui/react-tooltip": "^1.0.7",
+    "@tanstack/react-query": "^5.17.19",
+    "class-variance-authority": "^0.7.0",
+    "clsx": "^2.1.0",
+    "cmdk": "^0.2.0",
+    "date-fns": "^3.3.1",
+    "lucide-react": "^0.323.0",
+    "next-themes": "^0.2.1",
+    "react": "^18.2.0",
+    "react-day-picker": "^8.10.0",
+    "react-dom": "^18.2.0",
+    "react-hook-form": "^7.50.1",
+    "react-router-dom": "^6.22.0",
+    "sonner": "^1.4.0",
+    "tailwind-merge": "^2.2.1",
+    "tailwindcss-animate": "^1.0.7",
+    "vaul": "^0.9.0",
+    "zod": "^3.22.4"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.9.0",
+    "@tailwindcss/typography": "^0.5.15",
+    "@types/node": "^20.11.16",
+    "@types/react": "^18.2.43",
+    "@types/react-dom": "^18.2.17",
+    "@typescript-eslint/eslint-plugin": "^6.14.0",
+    "@typescript-eslint/parser": "^6.14.0",
+    "@vitejs/plugin-react-swc": "^3.5.0",
+    "autoprefixer": "^10.4.17",
+    "eslint": "^8.55.0",
+    "eslint-plugin-react-hooks": "^4.6.0",
+    "eslint-plugin-react-refresh": "^0.4.5",
+    "postcss": "^8.4.33",
+    "tailwindcss": "^3.4.1",
+    "typescript": "^5.2.2",
+    "vite": "^5.0.8"
+  }
+}
+```
+
+### vite.config.ts
+```typescript
+import { defineConfig } from 'vite'
+import react from '@vitejs/plugin-react-swc'
+import path from 'path'
+
+export default defineConfig({
+  plugins: [react()],
+  resolve: {
+    alias: {
+      '@': path.resolve(__dirname, './src'),
+    },
+  },
+})
+```
+
+### tsconfig.json
+```json
+{
+  "compilerOptions": {
+    "target": "ES2020",
+    "useDefineForClassFields": true,
+    "lib": ["ES2020", "DOM", "DOM.Iterable"],
+    "module": "ESNext",
+    "skipLibCheck": true,
+    "moduleResolution": "bundler",
+    "allowImportingTsExtensions": true,
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "noEmit": true,
+    "jsx": "react-jsx",
+    "strict": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noFallthroughCasesInSwitch": true,
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["./src/*"]
+    }
+  },
+  "include": ["src"],
+  "references": [{ "path": "./tsconfig.node.json" }]
+}
+```
+
+### tailwind.config.ts
+```typescript
+import type { Config } from "tailwindcss"
+
+const config = {
+  darkMode: ["class"],
+  content: [
+    './pages/**/*.{ts,tsx}',
+    './components/**/*.{ts,tsx}',
+    './app/**/*.{ts,tsx}',
+    './src/**/*.{ts,tsx}',
+  ],
+  prefix: "",
+  theme: {
+    container: {
+      center: true,
+      padding: "2rem",
+      screens: {
+        "2xl": "1400px",
+      },
+    },
+    extend: {
+      colors: {
+        border: "hsl(var(--border))",
+        input: "hsl(var(--input))",
+        ring: "hsl(var(--ring))",
+        background: "hsl(var(--background))",
+        foreground: "hsl(var(--foreground))",
+        primary: {
+          DEFAULT: "hsl(var(--primary))",
+          foreground: "hsl(var(--primary-foreground))",
+        },
+        secondary: {
+          DEFAULT: "hsl(var(--secondary))",
+          foreground: "hsl(var(--secondary-foreground))",
+        },
+        destructive: {
+          DEFAULT: "hsl(var(--destructive))",
+          foreground: "hsl(var(--destructive-foreground))",
+        },
+        muted: {
+          DEFAULT: "hsl(var(--muted))",
+          foreground: "hsl(var(--muted-foreground))",
+        },
+        accent: {
+          DEFAULT: "hsl(var(--accent))",
+          foreground: "hsl(var(--accent-foreground))",
+        },
+        popover: {
+          DEFAULT: "hsl(var(--popover))",
+          foreground: "hsl(var(--popover-foreground))",
+        },
+        card: {
+          DEFAULT: "hsl(var(--card))",
+          foreground: "hsl(var(--card-foreground))",
+        },
+      },
+      borderRadius: {
+        lg: "var(--radius)",
+        md: "calc(var(--radius) - 2px)",
+        sm: "calc(var(--radius) - 4px)",
+      },
+      keyframes: {
+        "accordion-down": {
+          from: { height: "0" },
+          to: { height: "var(--radix-accordion-content-height)" },
+        },
+        "accordion-up": {
+          from: { height: "var(--radix-accordion-content-height)" },
+          to: { height: "0" },
+        },
+      },
+      animation: {
+        "accordion-down": "accordion-down 0.2s ease-out",
+        "accordion-up": "accordion-up 0.2s ease-out",
+      },
+    },
+  },
+  plugins: [require("tailwindcss-animate")],
+} satisfies Config
+
+export default config
+```
+
+## Source Code Files
+
+### src/App.tsx
+```typescript
+import { Toaster } from "@/components/ui/toaster";
+import { Toaster as Sonner } from "@/components/ui/sonner";
+import { TooltipProvider } from "@/components/ui/tooltip";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import Index from "./pages/Index";
+import NotFound from "./pages/NotFound";
+
+const queryClient = new QueryClient();
+
+const App = () => (
+  <QueryClientProvider client={queryClient}>
+    <TooltipProvider>
+      <Toaster />
+      <Sonner />
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<Index />} />
+          <Route path="*" element={<NotFound />} />
+        </Routes>
+      </BrowserRouter>
+    </TooltipProvider>
+  </QueryClientProvider>
+);
+
+export default App;
+```
+
+### src/contexts/AudioEngineContext.tsx
+```typescript
+import React, { createContext, useContext, useState, useEffect, useRef, useCallback } from 'react';
+import { cn } from '../lib/utils';
+
+// Types
+export type AudioClip = {
+  id: string;
+  trackId: string;
+  audioBuffer: AudioBuffer;
+  startTime: number;
+  duration: number;
+  waveform: number[];
+  name: string;
+  color?: string;
+};
+
+export type Effect = {
+  id: string;
+  type: 'eq' | 'compressor' | 'reverb';
+  params: {
+    low?: number;
+    mid?: number;
+    high?: number;
+    peakReduction?: number;
+    gain?: number;
+    mix?: number;
+    size?: number;
+  };
+  enabled: boolean;
+};
+
+// ... rest of the context implementation
+```
+
+### src/components/DigitalAudioWorkstation.tsx
+```typescript
+import React, { useState } from 'react';
+import { AudioEngineProvider, useAudioEngine } from '../contexts/AudioEngineContext';
+import TrackList from './TrackList';
+import TransportControls from './TransportControls';
+import FileImport from './FileImport';
+import { Toaster } from '@/components/ui/sonner';
+import { Input } from '@/components/ui/input';
+import DigitalAudioWorkstationContent from './DigitalAudioWorkstationContent';
+
+const DigitalAudioWorkstation: React.FC = () => {
+  return (
+    <AudioEngineProvider>
+      <DigitalAudioWorkstationContent />
+    </AudioEngineProvider>
+  );
+};
+
+export default DigitalAudioWorkstation;
+```
+
+### src/components/TrackList.tsx
+```typescript
+import React from 'react';
+import { useAudioEngine } from '../contexts/AudioEngineContext';
+import Track from './Track';
+// ... rest of the imports
+
+const TrackList: React.FC = () => {
+  const { project, addTrack } = useAudioEngine();
+  
+  return (
+    <div className="flex flex-col h-full">
+      {project.tracks.map(track => (
+        <Track key={track.id} track={track} />
+      ))}
+      <button onClick={addTrack}>Add Track</button>
+    </div>
+  );
+};
+
+export default TrackList;
+```
+
+### src/components/Track.tsx
+```typescript
+import React from 'react';
+import { useAudioEngine } from '../contexts/AudioEngineContext';
+import AudioClip from './AudioClip';
+// ... rest of the imports
+
+const Track: React.FC<{ track: Track }> = ({ track }) => {
+  const { updateTrackName, updateTrackVolume } = useAudioEngine();
+  
+  return (
+    <div className="track">
+      <input
+        value={track.name}
+        onChange={(e) => updateTrackName(track.id, e.target.value)}
+      />
+      <input
+        type="range"
+        value={track.volume}
+        onChange={(e) => updateTrackVolume(track.id, parseFloat(e.target.value))}
+      />
+      {track.clips.map(clip => (
+        <AudioClip key={clip.id} clip={clip} />
+      ))}
+    </div>
+  );
+};
+
+export default Track;
+```
+
+### src/components/AudioClip.tsx
+```typescript
+import React from 'react';
+import { useAudioEngine } from '../contexts/AudioEngineContext';
+import Waveform from './Waveform';
+// ... rest of the imports
+
+const AudioClip: React.FC<{ clip: AudioClip }> = ({ clip }) => {
+  const { moveClip, trimClip } = useAudioEngine();
+  
+  return (
+    <div className="audio-clip">
+      <Waveform data={clip.waveform} />
+      {/* Clip controls */}
+    </div>
+  );
+};
+
+export default AudioClip;
+```
+
+### src/components/TransportControls.tsx
+```typescript
+import React from 'react';
+import { useAudioEngine } from '../contexts/AudioEngineContext';
+// ... rest of the imports
+
+const TransportControls: React.FC = () => {
+  const { play, pause, stop, seekTo } = useAudioEngine();
+  
+  return (
+    <div className="transport-controls">
+      <button onClick={play}>Play</button>
+      <button onClick={pause}>Pause</button>
+      <button onClick={stop}>Stop</button>
+      {/* Timeline and other controls */}
+    </div>
+  );
+};
+
+export default TransportControls;
+```
+
+### src/components/FileImport.tsx
+```typescript
+import React from 'react';
+import { useAudioEngine } from '../contexts/AudioEngineContext';
+// ... rest of the imports
+
+const FileImport: React.FC = () => {
+  const { addClip } = useAudioEngine();
+  
+  const handleFileUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (file) {
+      // Process audio file and add clip
+    }
+  };
+  
+  return (
+    <input
+      type="file"
+      accept="audio/*"
+      onChange={handleFileUpload}
+    />
+  );
+};
+
+export default FileImport;
+```
+
+## Utility Files
+
+### src/lib/utils.ts
+```typescript
+import { type ClassValue, clsx } from "clsx"
+import { twMerge } from "tailwind-merge"
+
+export function cn(...inputs: ClassValue[]) {
+  return twMerge(clsx(inputs))
+}
+```
+
+## Audio Worklets
+
+### src/audio-worklets/audio-processor.js
+```javascript
+class AudioProcessor extends AudioWorkletProcessor {
+  process(inputs, outputs, parameters) {
+    // Audio processing logic
+    return true;
+  }
+}
+
+registerProcessor('audio-processor', AudioProcessor);
+```
+
+## Hooks
+
+### src/hooks/useAudioContext.ts
+```typescript
+import { useState, useEffect } from 'react';
+
+export const useAudioContext = () => {
+  const [context, setContext] = useState<AudioContext | null>(null);
+  
+  useEffect(() => {
+    const audioContext = new AudioContext();
+    setContext(audioContext);
+    
+    return () => {
+      audioContext.close();
+    };
+  }, []);
+  
+  return context;
+};
+```
+
+## Pages
+
+### src/pages/Index.tsx
+```typescript
+import React from 'react';
+import DigitalAudioWorkstation from '../components/DigitalAudioWorkstation';
+
+const Index: React.FC = () => {
+  return (
+    <div className="h-screen">
+      <DigitalAudioWorkstation />
+    </div>
+  );
+};
+
+export default Index;
+```
+
+### src/pages/NotFound.tsx
+```typescript
+import React from 'react';
+import { Link } from 'react-router-dom';
+
+const NotFound: React.FC = () => {
+  return (
+    <div className="flex flex-col items-center justify-center h-screen">
+      <h1>404 - Page Not Found</h1>
+      <Link to="/">Return to Home</Link>
+    </div>
+  );
+};
+
+export default NotFound;
+```
+
+## Styles
+
+### src/index.css
+```css
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --background: 0 0% 100%;
+  --foreground: 222.2 84% 4.9%;
+  /* ... other CSS variables */
+}
+
+/* ... rest of the styles */
+```
+
+## HTML Entry Point
+
+### index.html
+```html
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Rhythm Sketchpad</title>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>
+```
+
+## Main Entry Point
+
+### src/main.tsx
+```typescript
+import React from 'react'
+import ReactDOM from 'react-dom/client'
+import App from './App'
+import './index.css'
+
+ReactDOM.createRoot(document.getElementById('root')!).render(
+  <React.StrictMode>
+    <App />
+  </React.StrictMode>,
+)
+``` 
