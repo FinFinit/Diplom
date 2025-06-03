@@ -1,0 +1,88 @@
+@startuml Rhythm Sketchpad Web - Architecture
+
+skinparam componentStyle uml2
+skinparam component {
+  BackgroundColor LightBlue
+  BorderColor DarkBlue
+  ArrowColor DarkBlue
+}
+
+package "Client Side" {
+  [Web Browser] as browser
+  
+  package "React Application" {
+    [App Component] as app
+    
+    package "Core Components" {
+      [Digital Audio Workstation] as daw
+      [Track List] as tracks
+      [Transport Controls] as transport
+      [File Import] as fileImport
+    }
+    
+    package "Audio Components" {
+      [Audio Clip] as clip
+      [Waveform] as waveform
+      [Effects Panel] as effects
+    }
+    
+    package "UI Components" {
+      [Buttons] as buttons
+      [Sliders] as sliders
+      [Tooltips] as tooltips
+    }
+    
+    package "Contexts" {
+      [Audio Engine Context] as audioContext
+    }
+    
+    package "Utils" {
+      [Audio Utils] as audioUtils
+      [Color Utils] as colorUtils
+    }
+  }
+}
+
+package "Web Audio API" {
+  [Audio Context] as webAudioContext
+  [Audio Worklet] as worklet
+  [Media Recorder] as recorder
+}
+
+package "Browser APIs" {
+  [File System API] as fileSystem
+  [Media Devices API] as mediaDevices
+}
+
+' Component relationships
+browser --> app
+app --> daw
+daw --> tracks
+daw --> transport
+daw --> fileImport
+daw --> audioContext
+
+tracks --> clip
+clip --> waveform
+tracks --> effects
+
+clip ..> audioUtils
+effects ..> audioUtils
+waveform ..> colorUtils
+
+audioContext --> webAudioContext
+webAudioContext --> worklet
+audioContext --> recorder
+audioContext --> mediaDevices
+
+fileImport --> fileSystem
+
+' UI Component usage
+daw ..> buttons
+daw ..> sliders
+daw ..> tooltips
+tracks ..> buttons
+transport ..> buttons
+effects ..> sliders
+
+@enduml
